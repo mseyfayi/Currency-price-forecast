@@ -1,7 +1,7 @@
 import json
 import urllib.request
 import csv
-from datetime import datetime
+from datetime import date
 
 
 def crawl(t, debug=False, length=10):
@@ -17,20 +17,29 @@ def crawl(t, debug=False, length=10):
     print('extracted from %s: %s' % (t, len(data)))
     to_csv = []
     for row in data:
+        is_int=True
         for i in range(0, 4):
             row[i] = row[i].replace(',', '')
+            if row[i].find('.'):
+                is_int=False
+
+        for i in range(0, 4):
+            row[i] = int(row[i]) if is_int else float(row[i])
 
         date_gr_split = [int(x) for x in row[6].split('/')]
-        date = datetime(date_gr_split[0], date_gr_split[1], date_gr_split[2])
+        d1 = date(date_gr_split[0], date_gr_split[1], date_gr_split[2])
+        d0 = date(2008, 1, 1)
+
+        d = d1 - d0
 
         item = {
-            'start': float(row[0]),
-            'min': float(row[1]),
-            'max': float(row[2]),
-            'end': float(row[3]),
+            'start': row[0],
+            'min': row[1],
+            'max': row[2],
+            'end': row[3],
             'date_gr': row[6],
             'date_fa': row[7],
-            'date': date
+            'date': d.days
         }
         to_csv.append(item)
 
@@ -42,7 +51,13 @@ def crawl(t, debug=False, length=10):
         dict_writer.writerows(to_csv)
 
 
-t_list = ['price_dollar_rl', 'crypto-ethereum', 'crypto-bitcoin', 'geram24', 'geram18']
+t_list = [
+    'price_dollar_rl',
+    'crypto-ethereum',
+    'crypto-bitcoin',
+    'geram24',
+    'geram18'
+]
 
 for l in t_list:
     crawl(l, True)
