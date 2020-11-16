@@ -4,10 +4,6 @@ import csv
 from datetime import datetime
 
 
-# t =
-# geram24,
-# geram18,
-# price_dollar_rl,
 def crawl(t, debug=False, length=10):
     url = "https://api.tgju.online/v1/market/indicator/summary-table-data/%s" % t
     if debug:
