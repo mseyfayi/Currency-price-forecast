@@ -17,14 +17,17 @@ def crawl(t, debug=False, length=10):
     print('extracted from %s: %s' % (t, len(data)))
     to_csv = []
     for row in data:
+        for i in range(0, 4):
+            row[i] = row[i].replace(',', '')
+
         date_gr_split = [int(x) for x in row[6].split('/')]
         date = datetime(date_gr_split[0], date_gr_split[1], date_gr_split[2])
 
         item = {
-            'start': row[0],
-            'min': row[1],
-            'max': row[2],
-            'end': row[3],
+            'start': float(row[0]),
+            'min': float(row[1]),
+            'max': float(row[2]),
+            'end': float(row[3]),
             'date_gr': row[6],
             'date_fa': row[7],
             'date': date
@@ -41,5 +44,5 @@ def crawl(t, debug=False, length=10):
 
 t_list = ['price_dollar_rl', 'crypto-ethereum', 'crypto-bitcoin', 'geram24', 'geram18']
 
-for i in t_list:
-    crawl(i, True)
+for l in t_list:
+    crawl(l, True)
