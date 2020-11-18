@@ -17,11 +17,11 @@ def crawl(t, debug=False, length=10):
     print('extracted from %s: %s' % (t, len(data)))
     to_csv = []
     for row in data:
-        is_int=True
+        is_int = True
         for i in range(0, 4):
             row[i] = row[i].replace(',', '')
-            if row[i].find('.'):
-                is_int=False
+            if row[i].find('.') > 0:
+                is_int = False
 
         for i in range(0, 4):
             row[i] = int(row[i]) if is_int else float(row[i])
