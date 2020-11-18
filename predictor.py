@@ -7,6 +7,8 @@ import ta
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout
 
+from utils import split_sequence
+
 plt.style.use("bmh")
 
 # %% Prepare DataFrame
@@ -43,3 +45,13 @@ close_scaler.fit(df_ta[['Close']])
 # Normalizing/Scaling the DF
 scaler = RobustScaler()
 df_sc = pd.DataFrame(scaler.fit_transform(df_ta), columns=df_ta.columns, index=df_ta.index)
+
+# %% Splitting the Data
+# How many periods looking back to learn
+n_per_in = 90
+# How many periods to predict
+n_per_out = 30
+# Features
+n_features = df_sc.shape[1]
+# Splitting the data into appropriate sequences
+X, y = split_sequence(df.to_numpy(), n_per_in, n_per_out)
