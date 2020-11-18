@@ -1,12 +1,11 @@
+import csv
 import json
 import urllib.request
-import csv
-from datetime import date
 
 
-def crawl(t, debug=False, length=10):
+def crawl(t, length=None):
     url = "https://api.tgju.online/v1/market/indicator/summary-table-data/%s" % t
-    if debug:
+    if length is not None:
         url = url + '?start=0&length=%s' % length
 
     data = urllib.request.urlopen(url).read()
@@ -26,26 +25,19 @@ def crawl(t, debug=False, length=10):
         for i in range(0, 4):
             row[i] = int(row[i]) if is_int else float(row[i])
 
-        date_gr_split = [int(x) for x in row[6].split('/')]
-        d1 = date(date_gr_split[0], date_gr_split[1], date_gr_split[2])
-        d0 = date(2008, 1, 1)
-
-        d = d1 - d0
-
         item = {
-            'start': row[0],
-            'min': row[1],
-            'max': row[2],
-            'end': row[3],
-            'date_gr': row[6],
-            'date_fa': row[7],
-            'date': d.days
+            'Open': row[0],
+            'Low': row[1],
+            'High': row[2],
+            'Close': row[3],
+            'Date': row[6],
+            'Date_fa': row[7],
         }
         to_csv.append(item)
 
     keys = to_csv[0].keys()
 
-    with open('Predictor/csv/%s.csv' % t, 'w', encoding='utf8', newline='') as output_file:
+    with open('/home/mohamad/Predictor/csv/%s.csv' % t, 'w', encoding='utf8', newline='') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(to_csv)
@@ -58,6 +50,4 @@ t_list = [
     'geram24',
     'geram18'
 ]
-
-for l in t_list:
-    crawl(l, True)
+crawl(t_list[0])
