@@ -50,4 +50,3 @@ t_list = [
     'geram24',
     'geram18'
 ]
-crawl(t_list[0])
