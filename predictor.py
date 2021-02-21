@@ -1,11 +1,7 @@
-# %%
-import matplotlib.pyplot as plt
-
-plt.style.use("bmh")
-
-# %% Imports
+import os
 from datetime import timedelta
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import ta
@@ -13,16 +9,21 @@ from keras.layers import LSTM, Dense
 from keras.models import Sequential
 from sklearn.preprocessing import RobustScaler
 
-from utils import split_sequence, visualize_training_results, val_rmse
 from crawler import t_list, crawl
+from utils import split_sequence, visualize_training_results, val_rmse
 
 # %%
-name = t_list[3]
+plt.style.use("bmh")
+
+# %%
+name = t_list[2]
 
 crawl(name)
 # %%
 # Read CSV file
-df = pd.read_csv('/home/mohamad/Predictor/csv/%s.csv' % name)
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, 'csv/%s.csv' % name)
+df = pd.read_csv(filename)
 
 # Add Volume column
 df['Volume'] = 1

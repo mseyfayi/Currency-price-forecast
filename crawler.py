@@ -1,5 +1,6 @@
 import csv
 import json
+import os
 import urllib.request
 
 
@@ -37,7 +38,9 @@ def crawl(t, length=None):
 
     keys = to_csv[0].keys()
 
-    with open('/home/mohamad/Predictor/csv/%s.csv' % t, 'w', encoding='utf8', newline='') as output_file:
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'csv/%s.csv' % t)
+    with open(filename, 'w', encoding='utf8', newline='') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(to_csv)
